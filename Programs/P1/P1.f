@@ -1,4 +1,3 @@
-GNU nano 4.8                                                                P1.f
 program P1
   implicit none
 
