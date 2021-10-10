@@ -4,4 +4,4 @@
 welcomeMessage <- "Hello world! (Wow how original)"
 
 # Print the contents of welcomeMessage
-print( welcomeMessage )
+print(welcomeMessage)
