@@ -7,4 +7,4 @@ print( paste( "VectorFloat is of type ", class(vectorNumeric), "and it's content
 
 # A vector of atmoic vectors becomes a single vector containing the contents of the inner vectors.
 vectorOfVectors <- c( c("first", "vector"), c("second", "vector"), c("third", "vector") )
-print( vectorOfVectors[1:3] )
+print( vectorOfVectors[1:6] )
