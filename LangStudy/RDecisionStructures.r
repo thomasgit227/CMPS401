@@ -16,7 +16,7 @@ if( condition == TRUE ){
   print( "The condition is now false.")
 }
 
-condition <- 1
+condition <- 4
 
 x <- switch( condition, "first condition", "second condition", "third condition", "fourth condition" )
 
