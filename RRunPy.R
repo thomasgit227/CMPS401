@@ -1,4 +1,5 @@
 library(reticulate)
+library(readxl)
 
 #Import and Install Libraries via Python
 py_install(packages = c("numpy","pandas","tensorflow","keras","seaborn", "seaborn"))
@@ -8,6 +9,10 @@ py_run_string('from tensorflow.keras.applications.vgg16 import preprocess_input,
 py_run_string('import pandas')
 py_run_string('import csv')
 
-
 #Run Python Script for Image Recognition
 source_python("Script.py")
+
+#Grab .xlsx Data
+data <- read_excel("")
+hamsterProb <- unlist(data[1])
+SandwichProb <- unlist(data[2])
