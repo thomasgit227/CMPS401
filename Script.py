@@ -1,56 +1,115 @@
 # import libraries to handle images + numpy for the math
 #Get the VGG16 pretrained image classifier model with the imagenet weights
+from posixpath import dirname
 from keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.vgg16 import preprocess_input,decode_predictions
 import numpy as np
-import csv
+import csv, os.path, re
 
-model = VGG16( weights = 'imagenet' )
-print( model.summary() )
+def processImage(fileName):
+  model = VGG16( weights = 'imagenet' )
+  #print( model.summary() )
 
-img_path = 'h1.jpg'
+  img_path = model = VGG16( weights = 'imagenet' )
+  print( model.summary() )
 
-# load the image with color data and as a specific size then display it
-img = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224) )
-# maybe do a thing to print the current image????
+  img_path = fileName
 
-# Convert the image to a 3D numpy array, 1 dimension for width, 1 for height, 1 for color
-x = image.img_to_array(img)
-x.shape
+  # load the image with color data and as a specific size then display it
+  img = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224) )
+  # maybe do a thing to print the current image????
 
-# Add a fourth dimension to the array to account for the number of images
-x = np.expand_dims(x, axis = 0 )
+  # Convert the image to a 3D numpy array, 1 dimension for width, 1 for height, 1 for color
+  x = image.img_to_array(img)
+  x.shape
 
-x = preprocess_input(x)
-features = model.predict(x)
-results = decode_predictions(features)
+  # Add a fourth dimension to the array to account for the number of images
+  x = np.expand_dims(x, axis = 0 )
 
-print(results)
+  x = preprocess_input(x)
+  features = model.predict(x)
+  results = decode_predictions(features)
 
-with open("results.csv", "w") as csvFile:
-  csvOut = csv.writer(csvFile)
-  csvOut.writerow(["Hamster", "Sandwich"])
+  print(results)
 
-  for currImage in results:
-    # this list will be written to the csv as a row on every loop
-    imgList = []
+  csvOpenMode = "a"
+  if os.path.exists("results.csv"):
+    csvOpenMode = "w"
 
-    # append 'hamster' probability or 0
-    for tup in currImage:
-      if "hamster" in tup[1]:
-        imgList.append(tup[2])
+  # CSV columns are "hamster" then "sandwich"
+  with open("results.csv", csvOpenMode) as csvFile:
+    csvOut = csv.writer(csvFile)
 
-    if len(imgList) == 0:
-      imgList.append(0.0)
+    for currImage in results:
+      # this list will be written to the csv as a row on every loop
+      imgList = []
 
-    # append 'sandwich' probability or 0
-    for tup in currImage:
-      if "sandwich" in tup[1]:
-        imgList.append(tup[2])
+      # append 'hamster' probability or 0
+      for tup in currImage:
+        if "hamster" in tup[1]:
+          imgList.append(tup[2])
 
-    if len(imgList) == 1:
-      imgList.append(0.0)
+      if len(imgList) == 0:
+        imgList.append(0.0)
 
-    # write row for image
-    csvOut.writerow(imgList)
+      # append 'sandwich' probability or 0
+      for tup in currImage:
+        if "sandwich" in tup[1]:
+          imgList.append(tup[2])
+
+      if len(imgList) == 1:
+        imgList.append(0.0)
+
+      csvOut.writerow(imgList)
+
+    # load the image with color data and as a specific size then display it
+    img = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224) )
+
+    # Convert the image to a 3D numpy array, 1 dimension for width, 1 for height, 1 for color
+    x = image.img_to_array(img)
+    x.shape
+
+    # Add a fourth dimension to the array to account for the number of images
+    x = np.expand_dims(x, axis = 0 )
+
+    x = preprocess_input(x)
+    features = model.predict(x)
+    results = decode_predictions(features)
+
+    with open("results.csv", "w") as csvFile:
+      csvOut = csv.writer(csvFile)
+      csvOut.writerow(["Hamster", "Sandwich"])
+
+      for currImage in results:
+        # this list will be written to the csv as a row on every loop
+        imgList = []
+
+        # append 'hamster' probability or 0
+        for tup in currImage:
+          if "hamster" in tup[1]:
+            imgList.append(tup[2])
+
+        if len(imgList) == 0:
+          imgList.append(0.0)
+
+        # append 'sandwich' probability or 0
+        for tup in currImage:
+          if "sandwich" in tup[1]:
+            imgList.append(tup[2])
+
+        if len(imgList) == 1:
+          imgList.append(0.0)
+
+        # write row for image
+        csvOut.writerow(imgList)
+
+imagePath = os.getcwd()
+
+for entry in os.scandir(imagePath):
+  if entry.path.endswith(".jpg") and entry.is_file():
+    fileName = re.search("[\w-]+\.jpg", os.path.join(entry)).group()
+    processImage(fileName)
+  elif entry.path.endswith(".png") and entry.is_file():
+    fileName = re.search("[\w-]+\.png", os.path.join(entry)).group()
+    processImage(fileName)
