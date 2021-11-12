@@ -33,6 +33,7 @@ with open("results.csv", "w") as csvFile:
   csvOut.writerow(["Hamster", "Sandwich"])
 
   for currImage in results:
+    # this list will be written to the csv as a row on every loop
     imgList = []
 
     # append 'hamster' probability or 0
