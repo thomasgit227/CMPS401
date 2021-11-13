@@ -198,11 +198,12 @@ def classify( Model, imagePath ):
 
 
 imagePath = os.getcwd()
+ourModel = createModel()
 
 for entry in os.scandir(imagePath):
   if entry.path.endswith(".jpg") and entry.is_file():
     fileName = re.search("[\w-]+\.jpg", os.path.join(entry)).group()
-    processImage(fileName)
+    classify(ourModel, hamfileName) 
   elif entry.path.endswith(".png") and entry.is_file():
     fileName = re.search("[\w-]+\.png", os.path.join(entry)).group()
-    processImage(fileName)
+    classify(ourModel, fileName)
