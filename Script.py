@@ -1,15 +1,5 @@
 # import libraries to handle images + numpy for the math
 #Get the VGG16 pretrained image classifier model with the imagenet weights
-from posixpath import dirname
-import csv, os.path, re
-from keras.applications.mobilenet_v2 import MobileNetV2
-from keras.applications.mobilenet_v2 import preprocess_input
-from keras.applications.mobilenet_v2 import decode_predictions
-from keras.layers import Dense
-from keras import Model
-from imageio import imread
-from skimage.transform import resize
-
 import numpy as np
 
 def processImage(fileName):
