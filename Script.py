@@ -223,12 +223,26 @@ def classify( Model, imagePath ):
 imagePath = os.getcwd()
 ourModel = createModel()
 
-for entry in os.scandir(imagePath):
-  if entry.path.endswith(".jpg") and entry.is_file():
-    fileName = re.search("[\w-]+\.jpg", os.path.join(entry)).group()
-    results = classify(ourModel, fileName)
-    print(results)
-  elif entry.path.endswith(".png") and entry.is_file():
-    fileName = re.search("[\w-]+\.png", os.path.join(entry)).group()
-    results = classify(ourModel, fileName)
-    print(results)
+with open("results.csv", "w") as csvFile:
+  csvOut = csv.writer(csvFile)
+
+  for entry in os.scandir(imagePath):
+    printToCsv = []
+
+    if entry.path.endswith(".jpg") and entry.is_file():
+      fileName = re.search("[\w-]+\.jpg", os.path.join(entry)).group()
+      results = classify(ourModel, fileName)
+
+      # write results to csv
+      printToCsv.append(results[0,0])
+      printToCsv.append(results[0,1])
+      csvOut.writerow(printToCsv)
+
+    elif entry.path.endswith(".png") and entry.is_file():
+      fileName = re.search("[\w-]+\.png", os.path.join(entry)).group()
+      results = classify(ourModel, fileName)
+
+      # write results to csv
+      printToCsv.append(results[0,0])
+      printToCsv.append(results[0,1])
+      csvOut.writerow(printToCsv)
