@@ -1,6 +1,15 @@
 # import libraries to handle images + numpy for the math
 #Get the VGG16 pretrained image classifier model with the imagenet weights
 import numpy as np
+from posixpath import dirname
+import csv, os.path, re
+from tensorflow.keras.preprocessing import image
+from keras.applications.mobilenet_v2 import MobileNetV2
+from keras.applications.mobilenet_v2 import preprocess_input
+from keras.applications.mobilenet_v2 import decode_predictions
+from keras.layers import Dense
+from keras import Model
+from skimage.transform import resize
 
 def processImage(fileName):
   model = VGG16( weights = 'imagenet' )
@@ -108,8 +117,11 @@ def createModel():
     data = np.empty( (120, 224, 224, 3) )
 
     for i in range(60):
-    
-        im = imread( 'hamster/h' + str(i+1) + ".jpg" )
+
+        img_path = "hamster/h" + str(i+1) + ".jpg"
+        im = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224, 1) )
+        im = image.img_to_array(im)
+        im.shape
         im = preprocess_input(im)
         im = resize( im, output_shape=(224, 224, 3 ) )
         data[i] = im
@@ -117,7 +129,10 @@ def createModel():
     for i in range(60):
     
         print('sandwich/s' + str(i+1) + ".jpg")
-        im = imread( 'sandwich2/s' + str(i+1) + ".jpg" )
+        img_path = "sandwich/s" + str(i+1) + ".jpg"
+        im = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224, 1) )
+        im = image.img_to_array(im)
+        im.shape
         im = preprocess_input(im)
         im = resize( im, output_shape=(224, 224, 3 ) )
         data[i + 60] = im
@@ -127,7 +142,7 @@ def createModel():
     labels[:60] = 0
     labels[60:] = 1
 
-    # Adjust our defaukt model to prepare it for retraining
+    # Adjust our default model to prepare it for retraining
     hamsam_output = Dense(2, activation = 'softmax')
     hamsam_output = hamsam_output(model.layers[-2].output)
 
@@ -151,14 +166,20 @@ def createModel():
     
         print('hamsterValid/h' + str(i+1) + ".jpg" )
     
-        im = imread( 'hamster/h' + str(i+1) + ".jpg" )
+        img_path = "hamster/h" + str(i+1) + ".jpg"
+        im = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224, 1) )
+        im = image.img_to_array(im)
+        im.shape
         im = preprocess_input(im)
         im = resize( im, output_shape=(224, 224 ) )
         test_data[i] = im
     
     for i in range(20):
         print( 'sandwichValid/s' + str(i+1) + ".jpg"  )
-        im = imread( 'sandwich/s' + str(i+1) + ".jpg" )
+        img_path = "sandwich/s" + str(i+1) + ".jpg"
+        im = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224, 1) )
+        im = image.img_to_array(im)
+        im.shape
         im = preprocess_input(im)
         im = resize( im, output_shape=(224, 224 ) )
         test_data[i + 20 ] = im
@@ -186,7 +207,9 @@ def createModel():
 def classify( Model, imagePath ):
     hamsam_test = np.empty( (1, 224, 224, 3) )
 
-    im = imread( imagePath )
+    im = image.load_img(imagePath, color_mode = 'rgb', target_size = (224, 224, 1) )
+    im = image.img_to_array(im)
+    im.shape
     im = preprocess_input(im)
     im = resize( im, output_shape=(224, 224, 3 ) )
     hamsam_test[0] = im
@@ -203,7 +226,9 @@ ourModel = createModel()
 for entry in os.scandir(imagePath):
   if entry.path.endswith(".jpg") and entry.is_file():
     fileName = re.search("[\w-]+\.jpg", os.path.join(entry)).group()
-    classify(ourModel, hamfileName) 
+    results = classify(ourModel, fileName)
+    print(results)
   elif entry.path.endswith(".png") and entry.is_file():
     fileName = re.search("[\w-]+\.png", os.path.join(entry)).group()
-    classify(ourModel, fileName)
+    results = classify(ourModel, fileName)
+    print(results)
