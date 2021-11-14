@@ -119,7 +119,7 @@ def createModel():
 def classify( Model, imagePath ):
     hamsam_test = np.empty( (1, 224, 224, 3) )
 
-    im = image.load_img(imagePath, color_mode = 'rgb', target_size = (224, 224, 1) )
+    im = image.load_img("images/" + imagePath, color_mode = 'rgb', target_size = (224, 224, 1) )
     im = image.img_to_array(im)
     im.shape
     im = preprocess_input(im)
@@ -135,7 +135,7 @@ def classify( Model, imagePath ):
 #####################################  PROGRAM  #########################################
 #########################################################################################
 
-imagePath = os.getcwd()
+imagePath = os.getcwd() + "\images"
 ourModel = createModel()
 
 with open("results.csv", "w") as csvFile:
@@ -150,6 +150,6 @@ with open("results.csv", "w") as csvFile:
       results = classify(ourModel, fileName)
 
       # write results to csv
-      printToCsv.append(results[0,0])
-      printToCsv.append(results[0,1])
+      printToCsv.append("{:.8f}".format(results[0,0]))
+      printToCsv.append("{:.8f}".format(results[0,1]))
       csvOut.writerow(printToCsv)

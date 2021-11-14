@@ -11,7 +11,9 @@
 #/ __|/ _` | '_ \ / _` \ \ /\ / / |/ __| '_ \ 
 #\__ \ (_| | | | | (_| |\ V  V /| | (__| | | |
 #|___/\__,_|_| |_|\__,_| \_/\_/ |_|\___|_| |_|
-#
+
+Sys.sleep(2)
+
 #        _           _
 #      (`-`;-"```"-;`-`)
 #       \.'         './
@@ -43,9 +45,10 @@
 
 
 
-library(reticulate)
-library(readxl)
+#library(reticulate)
+#library(readxl)
 
+Sys.sleep(2)
 
 # read csv file into a data frame
 data <- read.csv("results.csv")
@@ -59,10 +62,10 @@ SandwichProb <- mean(sandwichImages$Sandwich)
 print(hamsterProb)
 print(SandwichProb)
 
-graphSub <- sprintf("%s%f%s%f", "Hamster avg = ", hamsterProb, "     |     Sandwich avg = ", SandwichProb)
-
 # graph the data
-plot(data,col="blue", main="Image Recognition Certainty", sub=graphSub)
+graphSub <- sprintf("%s%f%s%f", "Hamster avg = ", hamsterProb, "     |     Sandwich avg = ", SandwichProb)
+plot(hamsterImages, ylim=c(0, 1), xlim=c(0, 1), col="blue", main="Image Recognition Certainty", sub=graphSub, cex=2, pch=10)
+points(sandwichImages, col="red", cex=2, pch=10)
 
 
 
