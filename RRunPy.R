@@ -5,38 +5,13 @@
 #| | | | (_| | | | | | \__ \ ||  __/ |   
 #|_| |_|\__,_|_| |_| |_|___/\__\___|_| 
 #
-#                     _         _       _     
-#                    | |       (_)     | |    
+#                     _          _      _     
+#                    | |        (_)    | |    
 # ___  __ _ _ __   __| |_      ___  ___| |__  
 #/ __|/ _` | '_ \ / _` \ \ /\ / / |/ __| '_ \ 
 #\__ \ (_| | | | | (_| |\ V  V /| | (__| | | |
 #|___/\__,_|_| |_|\__,_| \_/\_/ |_|\___|_| |_|
-
-
-library(reticulate)
-library(readxl)
-
-
-#Import and Install Libraries via Python
-py_install(packages = c("numpy","pandas","tensorflow","keras","seaborn","matplotlib"))
-py_run_string('from posixpath import dirname')
-py_run_string('import csv, os.path, re')
-py_run_string('from tensorflow.keras.preprocessing import image')
-py_run_string('from keras.applications.mobilenet_v2 import MobileNetV2')
-py_run_string('from keras.applications.mobilenet_v2 import preprocess_input')
-py_run_string('from keras.applications.mobilenet_v2 import decode_predictions')
-py_run_string('from keras.layers import Dense')
-py_run_string('from keras import Model')
-py_run_string('from skimage.transform import resize')
-
-#Run Python Script for Image Recognition
-source_python("Script.py")
-
-#Grab .xlsx Data
-#data <- read_excel("")
-#hamsterProb <- unlist(data[1])
-#SandwichProb <- unlist(data[2])
-
+#
 #        _           _
 #      (`-`;-"```"-;`-`)
 #       \.'         './
@@ -65,3 +40,39 @@ source_python("Script.py")
 #         ~-. \`--...--~ _.-~__...==~
 #            \.`--...---+-~~~~~
 #              ~-..----~
+
+
+
+library(reticulate)
+library(readxl)
+
+
+# read csv file into a data frame
+data <- read.csv("results.csv")
+print(data)
+
+hamsterImages <- subset(data, Hamster >= 0.5) # recognized as a hamster
+sandwichImages <- subset(data, Sandwich >= 0.5) # recognized as a sandwich
+
+hamsterProb <- mean(hamsterImages$Hamster)
+SandwichProb <- mean(sandwichImages$Sandwich)
+print(hamsterProb)
+print(SandwichProb)
+
+graphSub <- sprintf("%s%f%s%f", "Hamster avg = ", hamsterProb, "     |     Sandwich avg = ", SandwichProb)
+
+# graph the data
+plot(data,col="blue", main="Image Recognition Certainty", sub=graphSub)
+
+
+
+
+
+
+
+
+
+
+
+
+
