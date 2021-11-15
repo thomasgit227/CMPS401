@@ -83,17 +83,11 @@ points(
   col="red", 
   cex=2, 
   pch=10)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+barplot(
+  ylim = c(0,120),
+  main = 'Average Probability of Analyzed Image(s)',
+  c(mean(hamsterProb)*100, mean(SandwichProb)*100),
+  names.arg = c('Hamster', 'Sandwich'),
+  ylab = 'Likelihood (%)',
+  col = c('Blue','Red')
+)
