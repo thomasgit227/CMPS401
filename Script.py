@@ -79,7 +79,7 @@ def createModel():
 
     for i in range(20):
         print('hamsterValid/h' + str(i+1) + ".jpg" )
-        img_path = "hamster/h" + str(i+1) + ".jpg"
+        img_path = "hamsterValid/h" + str(i+1) + ".jpg"
         im = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224, 1) )
         im = image.img_to_array(im)
         im.shape
@@ -89,7 +89,7 @@ def createModel():
 
     for i in range(20):
         print( 'sandwichValid/s' + str(i+1) + ".jpg"  )
-        img_path = "sandwich/s" + str(i+1) + ".jpg"
+        img_path = "sandwichValid/s" + str(i+1) + ".jpg"
         im = image.load_img(img_path, color_mode = 'rgb', target_size = (224, 224, 1) )
         im = image.img_to_array(im)
         im.shape

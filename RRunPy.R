@@ -63,9 +63,27 @@ print(hamsterProb)
 print(SandwichProb)
 
 # graph the data
-graphSub <- sprintf("%s%f%s%f", "Hamster avg = ", hamsterProb, "     |     Sandwich avg = ", SandwichProb)
-plot(hamsterImages, ylim=c(0, 1), xlim=c(0, 1), col="blue", main="Image Recognition Certainty", sub=graphSub, cex=2, pch=10)
-points(sandwichImages, col="red", cex=2, pch=10)
+graphSub <- sprintf(
+  "%s%f%s%f", 
+  "Hamster avg = ", 
+  hamsterProb, 
+  "     |     Sandwich avg = ", 
+  SandwichProb)
+plot(
+  hamsterImages, 
+  ylim=c(0, 1), 
+  xlim=c(0, 1), 
+  col="blue", 
+  main="Image Recognition Certainty", 
+  sub=graphSub, 
+  cex=2, 
+  pch=10)
+points(
+  sandwichImages, 
+  col="red", 
+  cex=2, 
+  pch=10)
+
 
 
 
